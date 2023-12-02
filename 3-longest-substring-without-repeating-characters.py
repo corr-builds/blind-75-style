@@ -56,10 +56,9 @@ class Solution:
                 if end - start > longest_end - longest_start: # update longest
                     longest_end = end
                     longest_start = start
-                del hm[char]
+                del hm[s[start]]
                 start += 1
-            else:
-                hm[char] = 1 # continue to grow the window
+            hm[char] = 1 # continue to grow the window
         return longest_start - longest_end
 
 
