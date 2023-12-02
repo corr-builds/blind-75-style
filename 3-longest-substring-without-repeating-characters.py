@@ -52,7 +52,7 @@ class Solution:
         start = 0
         for end in range(0, len(s)):
             char = s[end]
-            if end != 0 and (char in hm or end == len(s) - 1): #that means we have found the current longest substring
+            while end != 0 and (char in hm or end == len(s) - 1): #that means we have found the current longest substring
                 if end - start > longest_end - longest_start: # update longest
                     longest_end = end
                     longest_start = start
