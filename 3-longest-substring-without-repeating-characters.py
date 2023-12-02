@@ -50,7 +50,7 @@ class Solution:
         longest_end = 0
         hm = {}
         start = 0
-        for end in range(0, len(s)):
+        for end in range(len(s)):
             char = s[end]
             while char in hm: #that means we have found the current longest substring
                 del hm[s[start]]
