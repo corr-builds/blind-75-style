@@ -49,13 +49,11 @@ class Solution:
         for end in range(len(nums)):
             end_int = nums[end]
             sub_sum += end_int
-            # shrink window
-            while sub_sum - nums[start] >= target:
+            # conditionally update and shrink window
+            while sub_sum >= target:
+                res = min(res, end - start + 1)
                 sub_sum -= nums[start]
                 start += 1
-            # conditionally update
-            if sub_sum >= target:
-                res = min(res, end - start + 1)
         return 0 if res == float('inf') else res
 
 
