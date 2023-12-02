@@ -46,8 +46,7 @@ class Solution:
             return 0
         if len(s) == 1:
             return 1
-        longest_start = 0
-        longest_end = 0
+        res = 0
         hm = {}
         start = 0
         for end in range(len(s)):
@@ -56,10 +55,8 @@ class Solution:
                 del hm[s[start]]
                 start += 1
             hm[char] = 1 # continue to grow the window
-            if end - start > longest_end - longest_start: # update longest
-                    longest_end = end
-                    longest_start = start
-        return longest_start - longest_end + 1
+            res = max(res, end - start + 1)
+        return res
 
 
         
