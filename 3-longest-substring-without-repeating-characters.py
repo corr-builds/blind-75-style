@@ -21,6 +21,8 @@ in terms of knowing how to finish a substring, we can stop when a char is added 
 what do we do when we find where the substring ends? from which index do we start the algorithm again?
 well, one way is to start again from the following index - is there a better way than that? hmm, seems good enough for now
 
+I think actually I should make it so that when I encounter an index with the end pointer, I make the letter there a candidate to be added to the current window, rather than immediately adding it to the current window
+
 example:
 input: syshy
 longest = sy
@@ -49,17 +51,16 @@ class Solution:
         hm = {}
         start = 0
         end = 0
-        hm[s[0]] = 1
-        for end in range(1, len(s)):
+        for end in range(0, len(s)):
             char = s[end]
-            if char in hm or end == len(s) - 1: #start searching for new substring
-                if end - start > longest_end - longest_start:
+            if end != 0 and (char in hm or end == len(s) - 1): #that means we have found the current longest substring
+                if end - start > longest_end - longest_start: # update longest
                     longest_end = end
                     longest_start = start
-                start += 1
                 del hm[char]
+                start += 1
             else:
-                hm[char] = 1 # being present in the hash map means the character is present in the string
+                hm[char] = 1 # continue to grow the window
         return longest_start - longest_end
 
 
