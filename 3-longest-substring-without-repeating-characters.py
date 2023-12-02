@@ -40,14 +40,19 @@ seems like a game plan. let's see what we can do
 
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
+        if len(s) == 0:
+            return 0
+        if len(s) == 1:
+            return 1
         longest_start = 0
         longest_end = 0
         hm = {}
         start = 0
         end = 0
-        for end in range(0, len(str)):
-            char = str[end]
-            if char in hm: #start searching for new substring
+        hm[s[0]] = 1
+        for end in range(1, len(s)):
+            char = s[end]
+            if char in hm or end == len(s) - 1: #start searching for new substring
                 if end - start > longest_end - longest_start:
                     longest_end = end
                     longest_start = start
@@ -55,7 +60,7 @@ class Solution:
                 del hm[char]
             else:
                 hm[char] = 1 # being present in the hash map means the character is present in the string
-        return str[longest_start:longest_end + 1]
+        return longest_start - longest_end
 
 
         
