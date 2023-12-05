@@ -64,6 +64,9 @@ sMap = {c: 1, a:1, o:2, b:1, y:4}
 and so on...
 
 I'm feeling pretty confident about this mechanism, so I'm going to implement it. let's go. wish me luck, me :) :D
+
+observations after getting help:
+we want each key in the hm for s to have a value greater than or equal to the value of that key in the hm of t
 """
 
 class Solution:
@@ -75,28 +78,24 @@ class Solution:
         left = 0
         minWinStart = 0
         minWinEnd = float("inf")
-        def meets_invariant(s_map, t_map):
-            # it would meet the invariant if we can subtract each item in t from s without coming up empty
-            t = t_map.copy()
-            s = s_map.copy()
-            for k, v in t_map.items():
-                # hmm, is there a better way to do this? could I some how keep track of whether it meets the invariant as we iterate? for now I'll define this. I'll come back
-                for i in range(v):
-                    if k in s:
-                        s[k] -= 1
-                        if s[k] == 0:
-                            del s[k]
-                    else:
-                        return False
-                return True
+        tWants = len(tMap) # the count of character t wants
+        sHas = 0 # the count of characters s has
+        def meets_invariant(newChar, sHas, tWants):
+            sMap[newChar] += 1
+            if sMap[newChar] == tMap[newChar]:
+                # desired count reached
+                sHas += 1
+            return tWants == sHas
 
         # put the chars in t into a mapping
         for char in t:
             tMap[char] += 1
         for right in range(len(s)):
             sMap[s[right]] += 1
-            while meets_invariant(sMap, tMap):
+            while meets_invariant(s[right], sHas, tWants) and left < right:
                 # advance left
+                if sMap[s[left]] == tMap[s[left]]:
+                    sHas -= 1 # it's about to be less than
                 sMap[s[left]] -= 1
                 if sMap[s[left]] == 0:
                     del sMap[s[left]]
