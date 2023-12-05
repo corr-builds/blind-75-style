@@ -79,7 +79,7 @@ class Solution:
             # it would meet the invariant if we can subtract each item in t from s without coming up empty
             t = t_map.copy()
             s = s_map.copy()
-            for k, v in t_map:
+            for k, v in t_map.items():
                 # hmm, is there a better way to do this? could I some how keep track of whether it meets the invariant as we iterate? for now I'll define this. I'll come back
                 for i in range(v):
                     if k in s:
@@ -101,7 +101,7 @@ class Solution:
                 if sMap[s[left]] == 0:
                     del sMap[s[left]]
                 left += 1
-            if meets_invariant(sMap, toMap): # todo define
+            if meets_invariant(sMap, tMap): # todo define
 
                 # check if min needs updated
                 if minWinEnd - minWinStart + 1 > right - left + 1:
