@@ -77,21 +77,31 @@ class Solution:
         minWinEnd = float("inf")
         def meets_invariant(s_map, t_map):
             # it would meet the invariant if we can subtract each item in t from s without coming up empty
+            t = t_map.copy()
+            s = s_map.copy()
             for k, v in t_map:
-                # hmm, is there a better way to do this? could I some how keep track of whether it meets the invariant as we iterate?
+                # hmm, is there a better way to do this? could I some how keep track of whether it meets the invariant as we iterate? for now I'll define this. I'll come back
+                for i in range(v):
+                    if k in s:
+                        s[k] -= 1
+                        if s[k] == 0:
+                            del s[k]
+                    else:
+                        return False
+                return True
 
         # put the chars in t into a mapping
         for char in t:
             tMap[char] += 1
         for right in range(len(s)):
             sMap[s[right]] += 1
-            while meets_invariant():
+            while meets_invariant(sMap, tMap):
                 # advance left
                 sMap[s[left]] -= 1
                 if sMap[s[left]] == 0:
                     del sMap[s[left]]
                 left += 1
-            if meets_invariant(): # todo define
+            if meets_invariant(sMap, toMap): # todo define
 
                 # check if min needs updated
                 if minWinEnd - minWinStart + 1 > right - left + 1:
