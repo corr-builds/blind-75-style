@@ -101,10 +101,8 @@ class Solution:
                 if sMap[s[left]] == 0:
                     del sMap[s[left]]
                 left += 1
-            if meets_invariant(sMap, tMap): # todo define
-
                 # check if min needs updated
-                if minWinEnd - minWinStart + 1 > right - left + 1:
+                if minWinEnd - minWinStart + 1 > (right - left + 1):
                     minWinStart = left
                     minWinEnd = right
         return "" if minWinEnd == float("inf") else s[minWinStart:minWinEnd + 1]
