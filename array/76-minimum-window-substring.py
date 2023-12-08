@@ -90,11 +90,6 @@ class Solution:
             if s_map[s[right]] == t_map[s[right]]:
                 # desired count reached
                 s_has += 1
-                print('r')
-            print(s_map)
-            print(t_map)
-            print(s_has)
-            print(t_wants)
             while t_wants == s_has:
                 # advance left
                 if s_map[s[left]] == t_map[s[left]]:
@@ -104,9 +99,8 @@ class Solution:
                     del s_map[s[left]]
                 left += 1
                 # check if min needs updated
-                print('chek - there is an issue below here, I think'')
                 if min_win_right - min_win_left + 1 > (right - left + 1):
-                    min_win_left = left
+                    min_win_left = left - 1 # minus 1 since left previously incremented
                     min_win_right = right
         return "" if min_win_right == float("inf") else s[min_win_left:min_win_right + 1]
         
