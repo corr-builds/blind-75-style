@@ -73,36 +73,40 @@ class Solution:
     def minWindow(self, s: str, t: str) -> str:
         if len(t) > len(s): # edge case
             return ""
-        tMap = defaultdict(int)
-        sMap = defaultdict(int)
+        t_map = defaultdict(int)
+        s_map = defaultdict(int)
         left = 0
-        minWinStart = 0
-        minWinEnd = float("inf")
-        tWants = len(tMap) # the count of character t wants
-        sHas = 0 # the count of characters s has
-        def meets_invariant(newChar, sHas, tWants):
-            sMap[newChar] += 1
-            if sMap[newChar] == tMap[newChar]:
-                # desired count reached
-                sHas += 1
-            return tWants == sHas
+        min_win_left = 0
+        min_win_right = float("inf")
+        s_has = 0 # the count of characters s has
 
         # put the chars in t into a mapping
         for char in t:
-            tMap[char] += 1
+            t_map[char] += 1
+        t_wants = len(t_map) # the count of character t wants
+
         for right in range(len(s)):
-            sMap[s[right]] += 1
-            while meets_invariant(s[right], sHas, tWants) and left < right:
+            s_map[s[right]] += 1
+            if s_map[s[right]] == t_map[s[right]]:
+                # desired count reached
+                s_has += 1
+                print('r')
+            print(s_map)
+            print(t_map)
+            print(s_has)
+            print(t_wants)
+            while t_wants == s_has:
                 # advance left
-                if sMap[s[left]] == tMap[s[left]]:
-                    sHas -= 1 # it's about to be less than
-                sMap[s[left]] -= 1
-                if sMap[s[left]] == 0:
-                    del sMap[s[left]]
+                if s_map[s[left]] == t_map[s[left]]:
+                    s_has -= 1 # it's about to be less than
+                s_map[s[left]] -= 1
+                if s_map[s[left]] == 0:
+                    del s_map[s[left]]
                 left += 1
                 # check if min needs updated
-                if minWinEnd - minWinStart + 1 > (right - left + 1):
-                    minWinStart = left
-                    minWinEnd = right
-        return "" if minWinEnd == float("inf") else s[minWinStart:minWinEnd + 1]
+                print('chek - there is an issue below here, I think'')
+                if min_win_right - min_win_left + 1 > (right - left + 1):
+                    min_win_left = left
+                    min_win_right = right
+        return "" if min_win_right == float("inf") else s[min_win_left:min_win_right + 1]
         
