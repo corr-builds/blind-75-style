@@ -31,15 +31,13 @@ return a..a
 class Solution:
     def findRepeatedDnaSequences(self, s: str) -> List[str]:
         left = 0
-        sequences = defaultdict(int)
+        sequences = set()
+        result = set()
         for right in range(9,len(s)):
-            print(s[left:right + 1])
-            print(len(s[left:right + 1]))
-            sequences[s[left:right + 1]] += 1
+            window = s[left:right + 1]
+            if window in sequences:
+                result.add(window)
+            sequences.add(window)
             # at end, bump left
             left += 1
-        result = []
-        for k, v in sequences.items():
-            if v >= 2:
-                result.append(k)
         return result
