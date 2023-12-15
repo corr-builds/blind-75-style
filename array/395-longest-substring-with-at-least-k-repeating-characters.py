@@ -90,24 +90,20 @@ I think I walked thru enough of a test above
 
 class Solution:
     def longestSubstring(self, s: str, k: int) -> int:
-        longest = left = 0
-        ht = defaultdict(int)
-        for right in range(len(s)):
-            ht[s[right]] += 1
-            # make the window meet invariant
-            def meets_invariant():
-                print(ht)
-                for v in ht.values():
-                    if v < k:
-                        return False
-                return True
-            while not meets_invariant():
-                # advance left
-                ht[s[left]] -= 1
-                if ht[s[left]] == 0:
-                    del ht[s[left]]
-                left += 1
-
-            longest = max(longest, right - left + 1)
+        longest = 0
+        for unique_char_count in range(1, 27):
+            left = 0
+            ht = defaultdict(int)
+            for right, c in enumerate(s):
+                ht[c] += 1
+                while len(ht) > unique_char_count:
+                    # advance left
+                    ht[s[left]] -= 1
+                    if ht[s[left]] == 0:
+                        del ht[s[left]]
+                    left += 1
+                # we know we have the right count of unique chars now, but we need to check that each repeats at lest K times
+                if all(v >= k for v in ht.values()):
+                    longest = max(longest, right - left + 1)
         return longest
         
