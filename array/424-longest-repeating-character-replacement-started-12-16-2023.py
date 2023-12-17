@@ -26,6 +26,9 @@ let's say you take the character in the ht that has the highest count. the ht wi
 so there's our invariant. and in terms of when to expand our window?
 well, if we have a left and right pointer, we can say the window will be of varying size
 and so we can advance the left pointer while the window does not meet the invariant, so that afterwords, the window will meet the invariant
+hmm is there a more clever way i can do this? what if I just keep track of 1: the length of the window 2: the count of the char with the highest occurence and what that char is
+then i could do lenght - count of highest occururing char
+and if that's > k, then window is invalid
 
 test:
 s = "abcaac", k = 1
@@ -48,29 +51,23 @@ class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
         ht = defaultdict(int)
         longest = left = 0
+        highest_char_count = 0
+        highest_char_count_char = ""
         for right, c in enumerate(s):
             ht[c] += 1
-            def meets_invariant(k_max):
-                # todo improve?
-                highest_count = 0
-                highest_count_char = ""
-                if len(ht) > k_max + 1:
-                    return False
-                for k, v in ht.items():
-                    if v > highest_count:
-                        highest_count = v
-                        highest_count_char = k
-                sum = 0
-                for k, v in ht.items():
-                    if k != highest_count_char:
-                        sum += v
-                if sum > k_max:
-                    return False
-                return True
-            while not meets_invariant(k):
+            if ht[c] > highest_char_count:
+                highest_char_count = ht[c]
+                highest_char_count_char = c
+            while right - left + 1 - highest_char_count > k:
                 ht[s[left]] -= 1
                 if ht[s[left]] == 0:
                     del ht[s[left]]
+                if s[left] == highest_char_count_char:
+                    # how to recalculate? - at least this only has to recalculate infrequently
+                    for key, v in ht.items():
+                        if v >= highest_char_count:
+                         highest_char_count = v
+                         highest_char_count_char = key
                 left += 1
             longest = max(longest, right - left + 1)
         return longest
