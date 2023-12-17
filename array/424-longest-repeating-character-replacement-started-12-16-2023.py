@@ -42,6 +42,7 @@ ht = { c:1, a:2}
 ht = {  a:2}
 ht = {  a:2, c:1}
 so return right - left + 1, aka 3
+the additional changes are because a larger window can only be found anyways if we also find a larger max frequency, so we don't need to bother decrementing it.
 
 let's try it out
 
@@ -52,22 +53,14 @@ class Solution:
         ht = defaultdict(int)
         longest = left = 0
         highest_char_count = 0
-        highest_char_count_char = ""
         for right, c in enumerate(s):
             ht[c] += 1
             if ht[c] > highest_char_count:
                 highest_char_count = ht[c]
-                highest_char_count_char = c
             while right - left + 1 - highest_char_count > k:
                 ht[s[left]] -= 1
                 if ht[s[left]] == 0:
                     del ht[s[left]]
-                if s[left] == highest_char_count_char:
-                    # how to recalculate? - at least this only has to recalculate infrequently
-                    for key, v in ht.items():
-                        if v >= highest_char_count:
-                         highest_char_count = v
-                         highest_char_count_char = key
                 left += 1
             longest = max(longest, right - left + 1)
         return longest
