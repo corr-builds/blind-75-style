@@ -42,19 +42,22 @@ result = [1] <- start index
 
 class Solution:
     def findAnagrams(self, s: str, p: str) -> List[int]:
-        result = []
-        left = 0
+        if len(p) > len(s): return []
         goal = defaultdict(int)
-        for c in p:
-            goal[c] += 1
         window = defaultdict(int)
-        for right, c in enumerate(s):
-            window[c] += 1
-            while c in window and not c in goal or goal[c] < window[c]:
-                window[s[left]] -= 1
-                if window[s[left]] == 0:
-                    del window[s[left]]
-                left += 1
+        for i in range(len(p)):
+            goal[p[i]] += 1
+            window[s[i]] += 1
+        result = [0] if goal == window else []
+        left = 0
+        right = len(p)
+        while right < len(s):
+            window[s[right]] += 1
+            window[s[left]] -= 1
+            if window[s[left]] == 0:
+                del window[s[left]]
+            left += 1
+            right += 1
             if goal==window:
                 result.append(left)
         return result
