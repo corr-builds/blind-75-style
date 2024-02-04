@@ -53,6 +53,8 @@ remove from the middle - regular
 remove rom the end - left.next = left.next.next (None)
 remove from the front - simply set head as right
 
+now i'll try another approach - 2 pointer. let's say i traverse from the end, then use math (len - distance from end) to traverse again from theh end and perform the removal
+
 """
 
 # Definition for singly-linked list.
@@ -65,27 +67,27 @@ class Solution:
         if not head.next:
             return None
         traverser = head
-        stack = []
+        length = 1
         # traverse to the end
         while traverser.next:
-            stack.append(traverser)
+            length += 1
             traverser = traverser.next
-        # locate the nth node from the end
-        count = 1
+        # traverse to right before the node we want to delete
 
-        while count < n:
-            traverser = stack.pop()
-            count += 1
+        dist = length - n # get distance from start of node to delete. so for [1] and n = 1, we want to remove node at 0. this makes it effectively 0-indexed
 
-        left = None if len(stack) == 0 else stack.pop()
+        # edge case where you are removing head
+        if dist == 0:
+            return head.next
 
         # perform removal
+        i = 1
+        traverser = head
+        while i < dist: # trav to node before node we want to remove
+            i += 1
+            traverser = traverser.next
 
-        if not left:
-            return traverser.next
-        if left.next:
-
-            left.next = left.next.next #right # thinking now, I actually only needed left, since I could have done left.next.next
+        traverser.next = None if not traverser.next else traverser.next.next # removal
 
         return head
         
