@@ -54,12 +54,9 @@ class Solution:
         if len(nums) == 0:
             return 0
         reader = writer = 0
-        while reader < len(nums):
-            if nums[reader] == val:
-                reader += 1
-                continue
-            nums[writer] = nums[reader]
-            writer += 1
-            reader += 1
+        for reader in range(len(nums)):
+            if nums[reader] != val:
+                nums[writer] = nums[reader]
+                writer += 1
         return writer
         
