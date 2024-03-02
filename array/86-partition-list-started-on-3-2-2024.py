@@ -33,6 +33,19 @@ l = [1, 2, 2]
 r = [4, 3, 5]
 create a new ll with nodes that have values in l, then nodes that have values in r
 
+---------------
+is there a way to do this in one pass?
+what would that look like with the example?
+1 is less than 3, so keep at left
+hm.. could I do the l and r thing the same way I did with lists, but instead start l and r virtual heads that are heads of linked lists?
+so starting that problem from the top
+lvhead = 0
+rvhead = 0
+1 is less than 3, so lvhead.next = 1
+rvhead.next = 4
+and so on...
+okay I'll just try solving this way reqlly quick
+
 """
 
 
@@ -43,26 +56,19 @@ create a new ll with nodes that have values in l, then nodes that have values in
 #         self.next = next
 class Solution:
     def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
-        if not head:
-            return head
-        l, r = [], []
+        vleft = ListNode()
+        vright = ListNode()
+        l = vleft
+        r = vright
         while head:
             if head.val < x:
-                l.append(head.val)
+                l.next = head
+                l = l.next # update l tail
             else:
-                r.append(head.val)
+                r.next = head
+                r = r.next # update r tail
             head = head.next
-        vhead = prev = ListNode()
-        for val in l:
-            current = ListNode(val, ListNode())
-            prev.next = current
-            prev = current
-            current = current.next
-        for val in r:
-            current = ListNode(val, ListNode())
-            prev.next = current
-            prev = current
-            current = current.next
-        prev.next = None
-        return vhead.next
+        l.next = vright.next
+        r.next = None
+        return vleft.next
         
