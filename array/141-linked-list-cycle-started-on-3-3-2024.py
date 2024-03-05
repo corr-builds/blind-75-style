@@ -1,3 +1,5 @@
+Beats 23, 81
+
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -6,14 +8,12 @@
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
-        d = {}
-        while head:
-            if head.val in d:
-                for node in d[head.val]:
-                    if node==head:
-                        return True
-                d[head.val].append(head)
-            else:
-                d[head.val] = [head]
+        if not head or not head.next:
+            return False
+        fast = head.next
+        while head and fast and fast.next:
+            if head == fast:
+                return True
             head = head.next
+            fast = fast.next.next
         return False 
