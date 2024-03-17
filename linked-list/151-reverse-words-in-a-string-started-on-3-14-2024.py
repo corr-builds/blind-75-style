@@ -24,7 +24,7 @@ class Solution:
             if s[start] == " ":
                 start += 1
                 continue
-            end = start
+            end = start + 1
             while end < len(s) and s[end] != " ":
                 end += 1
             rev = s[start:end] + " " + rev
