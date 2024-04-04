@@ -27,6 +27,12 @@ else, false
 edge case:
 
 strategy:
+re-thinking -
+let's say we have both short and long string - what makes the 2 of them valid?
+  that when we have travelled to the end of both of them, we have only encountered 1 character that is different
+  what do we do when we encounter a character that is different? we skip it
+  what if we ecnounter a character that is different and we had previously skipped a character? we return false
+  what if we do not encounter a chracter that is different? well, let's say we're traversing based on the long string. if we're on the last char of the long string and the index on the short string is out of bounds, then we can actually immediately return true, since then there is 1 "difference"
 
 test:
 
@@ -34,49 +40,40 @@ test:
 
 class Solution:
     def isOneEditDistance(self, s: str, t: str) -> bool:
-        def helper(s: str, t: str) -> bool:
-            # edge case
-            if s == "" and len(t) == 1:
-                return True
+        # edge case
+        if s == "" and len(t) == 1:
+            return True
+        if len(s) > len(t):
+            return self.isOneEditDistance(t, s)
 
-            unequal_found = False
-            if len(s) == len(t):
-                i = 0
-                for j in range(len(s)):
-                    if s[j] != t[i]:
-                        if unequal_found:
-                            return False
-                        else:
-                            unequal_found = True
-                    i += 1
-            elif len(s) + 1 == len(t):
-                i = 0
-                j = 0
-                while j < len(s) and i < len(t):
-                    if s[j] != t[i]:
-                        if unequal_found:
-                            return False
-                        i += 1 # speed it up by 1
+        unequal_found = False
+        if len(s) == len(t):
+            i = 0
+            for j in range(len(s)):
+                if s[j] != t[i]:
+                    if unequal_found:
+                        return False
+                    else:
                         unequal_found = True
-                    j += 1
-                    i += 1
-                # get pointers back in range
-                j -= 1
-                i -= 1
-
-                if unequal_found:
-                    if t[i] == s[j]:
-                        return True # because the last character is an extra
-                    else:
+                i += 1
+        elif len(s) + 1 == len(t):
+            i = 0
+            j = 0
+            while i < len(t):
+                if i == len(t) - 1 and j == len(s):
+                    if unequal_found:
                         return False
-                else:
-                    if t[i] == s[j]:
+                    return True
+                if t[i] != s[j]:
+                    if unequal_found:
                         return False
-                    else:
-                        return True
+                    unequal_found = True
+                    j -= 1
+                i += 1
+                j += 1
 
-            return unequal_found
-        return helper(s, t) or helper(t, s)
+
+        return unequal_found
 
 
         
