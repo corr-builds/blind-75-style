@@ -57,79 +57,29 @@ class Solution:
         print(version2)
         v1_fast = 1
         v2_fast = 1
-        v1_place = None
-        v2_place = None
         v1_slow = 0
         v2_slow = 0
-
-        while v1_fast < len(version1) and v2_fast < len(version2):
-            # traverse to next .
-            print("start")
+        while v1_fast < len(version1) or v2_fast < len(version2):
             while v1_fast < len(version1) and version1[v1_fast] != ".":
-                print("v1:" + str(v1_fast))
                 v1_fast += 1
-            # # if we reached end, walk it back so it's at an actual index
-            # if v1_fast == len(version1):
-
             while v2_fast < len(version2) and version2[v2_fast] != ".":
-                print("v2:" + str(v2_fast))
                 v2_fast += 1
-            print("setting v1_place to: " + str(v1_fast) + " - " + str(v1_slow))
-            v1_place = v1_fast - v1_slow
-            v2_place = v2_fast - v2_slow
-            v1_revision_sum = 0
-            v2_revision_sum = 0
-            # compare
-            while v1_slow < len(version1) and v2_slow < len(version2) and version1[v1_slow] != "." and version2[v2_slow] != ".":
-                v1_revision_sum += int(version1[v1_slow]) * v1_place
-                v1_place -= 1
-                v2_revision_sum += int(version2[v2_slow]) * v2_place
-                v2_place -= 1
-                v1_slow += 1
-                v2_slow += 1
-                print(str(v1_slow) + "a")
-                print(v2_slow)
-                print(v1_revision_sum)
-
-                print(v1_place)
-
-                print(v1_slow)
-                print("it")
-            # make sure slows are at next .
-            print("v1_place: " + str(v1_place))
-            while v1_place != 0:
-                v1_revision_sum += int(version1[v1_slow]) * v1_place
-                print(v1_revision_sum)
-                v1_place -= 1
-                print(v1_place)
-                v1_slow += 1
-                print(v1_slow)
-                print("")
-                print(str(v1_slow) +"b")
-            while v2_place != 0:
-                v2_revision_sum += int(version2[v2_slow]) * v2_place
-                v2_place -= 1
-                v2_slow += 1
-                print(str(v2_slow) + "c")
-            if v1_revision_sum < v2_revision_sum:
+            # print(v1_fast)
+            # print(version1[v1_slow:v1_fast])
+            # print(v2_fast)
+            # print(version1[v2_slow:v2_fast])
+            # print("--------")
+            rev1 = 0 if v1_fast == len(version1) else int(version1[v1_slow:v1_fast])
+            rev2 = 0 if v2_fast == len(version2) else int(version2[v2_slow:v2_fast])
+            if rev1 < rev2:
                 return -1
-            elif v1_revision_sum > v2_revision_sum:
+            elif rev1 > rev2:
                 return 1
-            # prep for next iteration
-            v1_fast += 1
-            v2_fast += 1
-            v1_slow += 1 # these should start at # after next .
-            v2_slow += 1
-        while v1_fast < len(version1):
-            if version1[v1_fast] != "0":
-                return 1
-            v1_fast += 1
-        while v2_fast < len(version2):
-            print("v2_fast:" + str(v2_fast))
-            print(version2[v2_fast])
-            if version2[v2_fast] != "0":
-                return -1
-            v2_fast += 1
+            v1_fast += 1 if v1_fast < len(version1) else 0
+            v2_fast += 1 if v2_fast < len(version2) else 0
+            v1_slow = v1_fast
+            v2_slow = v2_fast
+
         return 0
 
         
