@@ -41,29 +41,22 @@ class Solution:
         """
         Do not return anything, modify s in-place instead.
         """
-        a = b = len(s) - 1
-        insertion = 0
-        while b < len(s):
-            # take a to the start of the next word
-            while a >= 0 and s[a] != " ":
-                a -= 1
-            b = a
-            # take b to read the word
-            while b < len(s) and s[b] != " ":
-                s.insert(insertion, s[b])
-                # keep them pointing at the same letter, but advance b
-                insertion += 1
-                b += 2
-                a += 1
-                # clean up the character we inserted
-                del s[a]
-            # add the space
-            if a >= 0 and s[a] == " ":
-                s.insert(insertion, s[b])
-                # keep them pointing at the same letter, but advance b
-                insertion += 1
-                b += 2
-                a += 1
-                # clean up the character we inserted
-                del s[a]
-        
+        s.reverse()
+        # reverse each word
+        l = r = 0
+        while r < len(s):
+            # move r to end of word
+            while r < len(s) and s[r] != " ":
+                r += 1
+            rorig = r
+            r -= 1
+            while l < r:
+                temp = s[l]
+                s[l] = s[r]
+                s[r] = temp
+                l += 1
+                r -= 1
+            # move l and r to next spot
+            r = rorig
+            r += 1 # good enough to start next loop
+            l = r
